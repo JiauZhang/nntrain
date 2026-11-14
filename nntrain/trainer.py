@@ -87,17 +87,17 @@ class Trainer:
                 batch = to_device(batch, self.device)
                 with self.autocast:
                     loss = self.loss_fn(self.model, batch)
-                self._backward(loss, accumulation)
+                self.backward(loss, accumulation)
 
                 total_loss += float(loss.detach())
                 micro_steps += 1
                 pending += 1
                 if pending == accumulation:
-                    self._step()
+                    self.step()
                     pending = 0
                     optimizer_steps += 1
             if pending:
-                self._step()
+                self.step()
                 pending = 0
                 optimizer_steps += 1
             self.epoch += 1
@@ -109,14 +109,14 @@ class Trainer:
             "global_step": self.global_step,
         }
 
-    def _backward(self, loss, accumulation):
+    def backward(self, loss, accumulation):
         scaled = loss / accumulation
         if self.scaler is not None:
             self.scaler.scale(scaled).backward()
         else:
             scaled.backward()
 
-    def _step(self):
+    def step(self):
         if self.scaler is not None:
             self.scaler.unscale_(self.optimizer)
         if self.config.train.max_grad_norm is not None:

@@ -12,6 +12,8 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "nnm",
+    "nnserve",
+    "lossers",
     "conippets>=0.1.15",
     "torch>=2.6.0",
     "safetensors",
