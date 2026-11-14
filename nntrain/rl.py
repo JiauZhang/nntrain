@@ -30,7 +30,8 @@ def rollout_episode(
     tool_fn: Callable[[int, list[int]], list[int] | None] | None = None,
     max_turns: int = 1,
 ) -> Episode:
-    session = engine.create_session()
+    capacity = len(prompt_ids) + params.max_new_tokens * max_turns
+    session = engine.create_session(capacity=capacity)
     token_ids = []
     action_mask = []
     old_logprobs = []

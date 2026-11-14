@@ -15,7 +15,7 @@ dependencies = [
     "nnserve",
     "lossers",
     "conippets>=0.1.15",
-    "torch>=2.6.0",
+    "torch>=2.7.1",
     "safetensors",
 ]
 
